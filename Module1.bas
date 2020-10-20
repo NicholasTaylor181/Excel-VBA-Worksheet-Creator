@@ -29,22 +29,10 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     ActiveCell.FormulaR1C1 = "SIZE"
     Range("G2").Select
     ActiveCell.FormulaR1C1 = "ROTATE"
-    Range("A3").Select
-    Sheets("850_OReillyAuto_6248280A03GF00").Select
-    Range("G4:G240").Select
-    Selection.Copy
-    Sheets("Sheet1").Select
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-        :=False, Transpose:=False
-    Sheets("850_OReillyAuto_6248280A03GF00").Select
-    Range("C4:C240").Select
-    Range("C240").Activate
-    Application.CutCopyMode = False
-    Selection.Copy
-    Sheets("Sheet1").Select
-    Range("B3").Select
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-        :=False, Transpose:=False
+
+    Call Copy_Parts
+    
+    
     Range("A2:G2").Select
     Range("A2:G2").Select
     Selection.Font.Bold = True
@@ -159,8 +147,17 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .MergeCells = False
     End With
     ActiveWindow.SmallScroll Down:=-12
+    Sheets("Sheet1").Select
+    Sheets("Sheet1").Copy After:=Sheets(2)
+    Sheets("Sheet1").Select
+    Sheets("Sheet1").Copy After:=Sheets(3)
+    Sheets("Sheet1 (2)").Select
+    Sheets("Sheet1 (2)").Name = "BB"
+    Sheets("Sheet1 (3)").Select
+    Sheets("Sheet1 (3)").Name = "BBS"
     
-    Call Delete_Rows
+'    Call Delete_Rows
+'    delete rows only works when sorted by rotation
 End Sub
 Sub Macro2()
 Attribute Macro2.VB_ProcData.VB_Invoke_Func = "S\n14"
@@ -271,3 +268,34 @@ Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
         .Apply
     End With
 End Sub
+Sub Copy_Parts()
+'
+' Copy_Parts Macro
+'
+
+'
+    Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
+    Sheets("850_OReillyAuto_6248280A03GF00").Select
+    
+    Dim lRow As String
+    lRow = Cells(Rows.Count, 1).End(xlUp).Row
+    Range(Cells(4, 7), Cells(lRow, 7)).Select
+
+    Selection.Copy
+    Sheets("Sheet1").Select
+    Range("A3").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Sheets("850_OReillyAuto_6248280A03GF00").Select
+    Range(Cells(4, 3), Cells(lRow, 3)).Select
+    
+    Range("C240").Activate
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Sheet1").Select
+    Range("B3").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+End Sub
+
+
