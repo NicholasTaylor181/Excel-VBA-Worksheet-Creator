@@ -7,7 +7,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
 ' Keyboard Shortcut: Ctrl+Shift+A
 '
     Sheets.Add After:=ActiveSheet
-    Sheets("850_OReillyAuto_6248280A03GF00").Select
+    Sheets(1).Activate
     Range("C2").Select
     Selection.Copy
     Sheets("Sheet1").Select
@@ -192,7 +192,6 @@ Sub Delete_Rows()
 ' Keyboard Shortcut: Ctrl+Shift+S
 '
 
-    Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
     Sheets("BB").Select
     Dim bbRangeStart As String
     bbRangeStart = WorksheetFunction.Match("*S*", Range("A:A"), 0)
@@ -274,8 +273,7 @@ Sub Copy_Parts()
 '
 
 '
-    Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
-    Sheets("850_OReillyAuto_6248280A03GF00").Select
+    Sheets(1).Activate
     
     Dim lRow As String
     lRow = Cells(Rows.Count, 1).End(xlUp).Row
@@ -286,16 +284,26 @@ Sub Copy_Parts()
     Range("A3").Select
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
-    Sheets("850_OReillyAuto_6248280A03GF00").Select
+    Sheets(1).Activate
     Range(Cells(4, 3), Cells(lRow, 3)).Select
-    
-    Range("C240").Activate
     Application.CutCopyMode = False
     Selection.Copy
     Sheets("Sheet1").Select
     Range("B3").Select
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
+End Sub
+
+Sub Select_Sheet()
+'
+' Select_Sheet Macro
+'
+
+'
+    Sheets(1).Activate
+    Range("A3").Select
+    
+    
 End Sub
 
 
