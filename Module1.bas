@@ -36,7 +36,9 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("A2:G2").Select
     Range("A2:G2").Select
     Selection.Font.Bold = True
-    Range("A2:G239").Select
+    Dim lastRow As String
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    Range("A2:G" & lastRow).Select
     Selection.Borders(xlDiagonalDown).LineStyle = xlNone
     Selection.Borders(xlDiagonalUp).LineStyle = xlNone
     With Selection.Borders(xlEdgeLeft)
@@ -76,9 +78,9 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .Weight = xlThin
     End With
     ActiveWindow.SmallScroll Down:=228
-    Range("B240").Select
+    Range("B" & lastRow + 1).Select
     Application.CutCopyMode = False
-    ActiveCell.FormulaR1C1 = "=SUM(R[-237]C:R[-1]C)"
+    ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
     Range("B241").Select
     ActiveWindow.SmallScroll Down:=-243
     Range("D3").Select
@@ -90,8 +92,8 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("G3").Select
     ActiveCell.FormulaR1C1 = "=TODAY()"
     Range("D3:G3").Select
-    Selection.AutoFill Destination:=Range("D3:G239")
-    Range("D3:G239").Select
+    Selection.AutoFill Destination:=Range("D3:G" & lastRow)
+    Range("D3:G" & lastRow).Select
     Range("A2:G2").Select
     Selection.AutoFilter
     Range("H1").Select
@@ -121,7 +123,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .MergeCells = False
     End With
     Selection.Merge
-    Range("D3:G239").Select
+    Range("D3:G" & lastRow).Select
     With Selection
         .HorizontalAlignment = xlCenter
         .VerticalAlignment = xlBottom
@@ -134,7 +136,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .MergeCells = False
     End With
     ActiveWindow.SmallScroll Down:=-12
-    Range("B3:B239").Select
+    Range("B3:B" & lastRow).Select
     With Selection
         .HorizontalAlignment = xlCenter
         .VerticalAlignment = xlBottom
@@ -295,13 +297,17 @@ Sub Copy_Parts()
 End Sub
 
 Sub Select_Sheet()
+Attribute Select_Sheet.VB_ProcData.VB_Invoke_Func = "n\n14"
 '
 ' Select_Sheet Macro
 '
 
 '
-    Sheets(1).Activate
-    Range("A3").Select
+    Dim lastRow As String
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+    Range("B" & lastRow + 1).Select
+    ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
     
     
 End Sub
