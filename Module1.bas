@@ -84,13 +84,13 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("B241").Select
     ActiveWindow.SmallScroll Down:=-243
     Range("D3").Select
-    ActiveCell.FormulaR1C1 = "=TODAY()"
+    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,3,0)"
     Range("E3").Select
-    ActiveCell.FormulaR1C1 = "=TODAY()"
+    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,4,0)"
     Range("F3").Select
-    ActiveCell.FormulaR1C1 = "=TODAY()"
+    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,5,0)"
     Range("G3").Select
-    ActiveCell.FormulaR1C1 = "=TODAY()"
+    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
     Range("D3:G3").Select
     Selection.AutoFill Destination:=Range("D3:G" & lastRow)
     Range("D3:G" & lastRow).Select
@@ -99,7 +99,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("H1").Select
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
-        Range("G2"), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:= _
+        Range("G2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
         xlSortNormal
     With ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort
         .Header = xlYes
@@ -158,33 +158,19 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Sheets("Sheet1 (3)").Select
     Sheets("Sheet1 (3)").Name = "BBS"
     
-'    Call Delete_Rows
+    Call Delete_Rows
 '    delete rows only works when sorted by rotation
 End Sub
-Sub Macro2()
-Attribute Macro2.VB_ProcData.VB_Invoke_Func = "S\n14"
+Sub Set_Date()
+Attribute Set_Date.VB_ProcData.VB_Invoke_Func = "S\n14"
 '
-' Macro2 Macro
+' Set_Date Macro
 '
 ' Keyboard Shortcut: Ctrl+Shift+S
 '
-    Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
-    Sheets("Sheet1").Select
-    Sheets("Sheet1").Copy After:=Sheets(2)
-    Sheets("Sheet1").Select
-    Sheets("Sheet1").Copy After:=Sheets(3)
-    Sheets("Sheet1 (2)").Select
-    Sheets("Sheet1 (2)").Name = "BB"
-    Sheets("Sheet1 (3)").Select
-    Sheets("Sheet1 (3)").Name = "BBS"
-    Sheets("BB").Select
-    ActiveWindow.SmallScroll Down:=132
-    Rows("139:239").Select
-    Selection.Delete Shift:=xlUp
-    ActiveWindow.SmallScroll Down:=-165
-    Sheets("BBS").Select
-    Rows("3:138").Select
-    Selection.Delete Shift:=xlUp
+
+'  set up dynamic date
+
 End Sub
 
 Sub Delete_Rows()
@@ -224,7 +210,7 @@ Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
     Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
     ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:= _
+        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
         xlSortNormal
     With ActiveWorkbook.Worksheets("BB").AutoFilter.Sort
         .Header = xlYes
@@ -246,7 +232,7 @@ Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
     End With
     ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:= _
+        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
         xlSortNormal
     With ActiveWorkbook.Worksheets("BB").AutoFilter.Sort
         .Header = xlYes
@@ -259,7 +245,7 @@ Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
     ActiveWindow.SmallScroll Down:=-120
     ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:= _
+        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
         xlSortNormal
     With ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort
         .Header = xlYes
@@ -296,18 +282,26 @@ Sub Copy_Parts()
         :=False, Transpose:=False
 End Sub
 
-Sub Select_Sheet()
-Attribute Select_Sheet.VB_ProcData.VB_Invoke_Func = "n\n14"
+Sub Test()
+Attribute Test.VB_ProcData.VB_Invoke_Func = "n\n14"
 '
-' Select_Sheet Macro
+' Test Macro
 '
 
 '
-    Dim lastRow As String
-    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+'    Range("B14").FormulaR1C1 = "=""'[VDP PO ""&TEXT(TODAY(),""yyyymmdd"")&"".xlsx]BASE'!"""
+'    Range("B15").Formula = "=VLOOKUP(B2,INDIRECT(B14&""C:R""),16,0)"
     
-    Range("B" & lastRow + 1).Select
-    ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
+    Range("G3").Select
+    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
+
+
+'    Dim lastRow As String
+ '   lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+  '  Range("B" & lastRow + 1).Select
+  '  ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
     
     
 End Sub
