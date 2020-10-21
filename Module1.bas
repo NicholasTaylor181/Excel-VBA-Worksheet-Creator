@@ -6,6 +6,10 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
 '
 ' Keyboard Shortcut: Ctrl+Shift+A
 '
+
+    Dim macroWorkbook As Workbook
+    Set macroWorkbook = ThisWorkbook
+
     Sheets.Add After:=ActiveSheet
     Sheets(1).Activate
     Range("C2").Select
@@ -84,13 +88,17 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("B241").Select
     ActiveWindow.SmallScroll Down:=-243
     Range("D3").Select
-    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,3,0)"
+'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,3,0)"
+    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("D3").Formula
     Range("E3").Select
-    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,4,0)"
+'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,4,0)"
+    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("E3").Formula
     Range("F3").Select
-    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,5,0)"
+'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,5,0)"
+    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("F3").Formula
     Range("G3").Select
-    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
+'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
+    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("G3").Formula
     Range("D3:G3").Select
     Selection.AutoFill Destination:=Range("D3:G" & lastRow)
     Range("D3:G" & lastRow).Select
@@ -292,9 +300,11 @@ Attribute Test.VB_ProcData.VB_Invoke_Func = "n\n14"
 
 '    Range("B14").FormulaR1C1 = "=""'[VDP PO ""&TEXT(TODAY(),""yyyymmdd"")&"".xlsx]BASE'!"""
 '    Range("B15").Formula = "=VLOOKUP(B2,INDIRECT(B14&""C:R""),16,0)"
+    Dim macroWorkbook As Workbook
+    Set macroWorkbook = ThisWorkbook
     
     Range("G3").Select
-    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
+    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("G3").Formula
 
 
 '    Dim lastRow As String
@@ -302,6 +312,21 @@ Attribute Test.VB_ProcData.VB_Invoke_Func = "n\n14"
     
   '  Range("B" & lastRow + 1).Select
   '  ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
+  
+  
+  'FOR EDGECODE
+  ' USE SHIP STATE, CA OR WA
+  
+  
+  
+  'FOR AZ OR OR
+  ' IF H3 = OR_SKU
+  
+  'FOR AZ ADD NEW COLUMN TO H
+  'SAME PROCEDURE OTHERWISE
+  'MAYBE FOR INV ROTATE SIZE ETC INSTEAD OF COPYING ALL INV INTO TEMP, HAVE JUST THE FORMULA LINKING TO INV, THEN COPY THAT TO SHEETS
+  
+  
     
     
 End Sub
