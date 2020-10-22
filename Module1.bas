@@ -10,30 +10,32 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Dim macroWorkbook As Workbook
     Set macroWorkbook = ThisWorkbook
     
+    Dim isAutozone As Boolean
+    isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
+    
 
-    Sheets.Add After:=ActiveSheet
+    Sheets.Add after:=ActiveSheet
     Sheets(1).Activate
-    Range("C2").Select
-    Selection.Copy
+    If isAutozone Then
+    Range("B2").Copy
+    Else
+    Range("C2").Copy
+    End If
     Sheets("Sheet1").Select
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
     Selection.Font.Bold = True
     Columns("A:A").EntireColumn.AutoFit
-    Range("A2").Select
-    ActiveCell.FormulaR1C1 = "PART"
-    Range("B2").Select
-    ActiveCell.FormulaR1C1 = "ORDER"
-    Range("C2").Select
-    ActiveCell.FormulaR1C1 = "PULL"
-    Range("D2").Select
-    ActiveCell.FormulaR1C1 = "INV"
-    Range("E2").Select
-    ActiveCell.FormulaR1C1 = "SITE"
-    Range("F2").Select
-    ActiveCell.FormulaR1C1 = "SIZE"
-    Range("G2").Select
-    ActiveCell.FormulaR1C1 = "ROTATE"
+    Range("A2") = "PART"
+    Range("B2") = "ORDER"
+    Range("C2") = "PULL"
+    Range("D2") = "INV"
+    Range("E2") = "SITE"
+    Range("F2") = "SIZE"
+    Range("G2") = "ROTATE"
+    If isAutozone Then
+    Range("H2") = "NEW"
+    End If
 
     Call Copy_Parts
     
@@ -85,18 +87,33 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("B" & lastRow + 1).Select
     Application.CutCopyMode = False
     ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
+    If isAutozone Then
+    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D6").Formula
+    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E6").Formula
+    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F6").Formula
+    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G6").Formula
+    Range("H3").Formula = macroWorkbook.Sheets(1).Range("H6").Formula
+    Range("H3:H3").AutoFill Destination:=Range("H3:H" & lastRow)
+    Else
     Range("D3").Formula = macroWorkbook.Sheets(1).Range("D3").Formula
     Range("E3").Formula = macroWorkbook.Sheets(1).Range("E3").Formula
     Range("F3").Formula = macroWorkbook.Sheets(1).Range("F3").Formula
     Range("G3").Formula = macroWorkbook.Sheets(1).Range("G3").Formula
+    End If
     Range("D3:G3").AutoFill Destination:=Range("D3:G" & lastRow)
-    Range("D3:G" & lastRow).Select
-    Range("A2:G2").AutoFilter
+    Range("D3:H" & lastRow).Select
+    Range("A2:H2").AutoFilter
     Range("H1").Select
+    Columns("G:G").EntireColumn.AutoFit
+    
+    
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
         Range("G2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
         xlSortNormal
+        
+        
+        
     With ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort
         .Header = xlYes
         .MatchCase = False
@@ -109,7 +126,6 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     
     Range("B1").Select
     Call Set_Date
-'    Call Edge_Code
     Range("B1").Font.Bold = True
     Range("B1:G1").Select
     With Selection
@@ -124,7 +140,11 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .MergeCells = False
     End With
     Selection.Merge
+    If isAutozone Then
+    Range("D3:H" & lastRow).Select
+    Else
     Range("D3:G" & lastRow).Select
+    End If
     With Selection
         .HorizontalAlignment = xlCenter
         .VerticalAlignment = xlBottom
@@ -136,7 +156,6 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .ReadingOrder = xlContext
         .MergeCells = False
     End With
-    ActiveWindow.SmallScroll Down:=-12
     Range("B3:B" & lastRow).Select
     With Selection
         .HorizontalAlignment = xlCenter
@@ -149,16 +168,21 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .ReadingOrder = xlContext
         .MergeCells = False
     End With
-    ActiveWindow.SmallScroll Down:=-12
-    Sheets("Sheet1").Select
-    Sheets("Sheet1").Copy After:=Sheets(2)
-    Sheets("Sheet1").Select
-    Sheets("Sheet1").Copy After:=Sheets(3)
-    Sheets("Sheet1 (2)").Select
+    Sheets("Sheet1").Copy after:=Sheets(2)
+    Sheets("Sheet1").Copy after:=Sheets(3)
+    If isAutozone Then
+    Dim isGold As Range
+    Set isGold = Columns(1).Find("*G*")
+        If Not isGold Is Nothing Then
+        Sheets("Sheet1").Copy after:=Sheets(4)
+        Sheets("Sheet1 (4)").Name = "GOLD"
+        End If
+    Sheets("Sheet1 (2)").Name = "PADS"
+    Sheets("Sheet1 (3)").Name = "SHOES"
+    Else
     Sheets("Sheet1 (2)").Name = "BB"
-    Sheets("Sheet1 (3)").Select
     Sheets("Sheet1 (3)").Name = "BBS"
-    
+    End If
     Call Delete_Rows
     Call Edge_Code
 '    delete rows only works when sorted by rotation
@@ -170,10 +194,20 @@ Attribute Set_Date.VB_ProcData.VB_Invoke_Func = "S\n14"
 '
 '
 '
+
+    Dim isAutozone As Boolean
+    isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
+    
     Dim orderDate As String
-    orderDate = Sheets(1).Range("D2").Value + 1
     Dim shipDate As String
+    
+    If isAutozone Then
+    orderDate = Sheets(1).Range("C2").Value
+    shipDate = Sheets(1).Range("D2").Value
+    Else
+    orderDate = Sheets(1).Range("D2").Value + 1
     shipDate = Sheets(1).Range("G2").Value - 1
+    End If
     ActiveCell = "ORDER: " & Mid(orderDate, 5, 2) & "/" & Right(orderDate, 2) & "/" & Left(orderDate, 4) & "          SHIP: " & Mid(shipDate, 5, 2) & "/" & Right(shipDate, 2) & "/" & Left(shipDate, 4)
     
 End Sub
@@ -191,7 +225,7 @@ Sub Edge_Code()
     If Mid(Sheets(1).Range("C2").Value, 8, 1) = "A" Then
     orderNum = Mid(Sheets(1).Range("C2").Value, 9, 2)
     
-    Else: orderNum = Left(Sheets(1).Range("C2").Value, 2)
+    Else: orderNum = Left(Sheets(1).Range("B2").Value, 2)
     
     End If
     
@@ -237,6 +271,41 @@ Sub Delete_Rows()
 ' Keyboard Shortcut: Ctrl+Shift+S
 '
 
+    Dim isAutozone As Boolean
+    isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
+    
+    If isAutozone Then
+    Dim isGold As Range
+    Set isGold = Columns(1).Find("*G*")
+        If Not isGold Is Nothing Then
+        Dim goldStart As String
+        goldStart = WorksheetFunction.Match("*G*", Range("A:A"), 0)
+        
+        Dim goldEnd As Range
+        Set goldEnd = Range("A:A").Find(what:=pad, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
+        Sheets("PADS").Select
+        Rows(goldStart & ":" & WorksheetFunction.Match(goldEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
+        
+        Sheets("SHOES").Select
+        Rows(goldStart & ":" & WorksheetFunction.Match(goldEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
+        
+        Sheets("GOLD").Select
+        Rows("3:" & goldStart - 1).Delete Shift:=xlUp
+        End If
+    Sheets("PADS").Select
+    Dim d As String
+    
+    Dim padRangeEnd As Range
+    d = "*D*"
+    Set padRangeEnd = Range("A:A").Find(what:=d, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
+    Dim lastRow As String
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    Rows(WorksheetFunction.Match(padRangeEnd.Value, Range("A:A"), 0) + 1 & ":" & lastRow).Delete Shift:=xlUp
+    
+    Sheets("SHOES").Select
+    Rows("3:" & WorksheetFunction.Match(padRangeEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
+        
+    Else
     Sheets("BB").Select
     Dim bbRangeStart As String
     bbRangeStart = WorksheetFunction.Match("*S*", Range("A:A"), 0)
@@ -254,6 +323,7 @@ Sub Delete_Rows()
     lRow = Cells(Rows.Count, 1).End(xlUp).Row
     Rows(bbsRangeStart & ":" & lRow).Select
     Selection.Delete Shift:=xlUp
+    End If
 End Sub
 Sub Filter_test()
 Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
@@ -339,8 +409,8 @@ Sub Copy_Parts()
         :=False, Transpose:=False
 End Sub
 
-Sub Test()
-Attribute Test.VB_ProcData.VB_Invoke_Func = "n\n14"
+Sub test()
+Attribute test.VB_ProcData.VB_Invoke_Func = "n\n14"
 '
 ' Test Macro
 '
@@ -349,11 +419,39 @@ Attribute Test.VB_ProcData.VB_Invoke_Func = "n\n14"
 
 '    Range("B14").FormulaR1C1 = "=""'[VDP PO ""&TEXT(TODAY(),""yyyymmdd"")&"".xlsx]BASE'!"""
 '    Range("B15").Formula = "=VLOOKUP(B2,INDIRECT(B14&""C:R""),16,0)"
-    Dim macroWorkbook As Workbook
-    Set macroWorkbook = ThisWorkbook
+'    Dim macroWorkbook As Workbook
+'    Set macroWorkbook = ThisWorkbook
+    
+    Dim isAutozone As Boolean
+    isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
+    
+    
     
     Range("G3").Select
-    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("G3").Formula
+'    If isAutozone Then
+'    Dim test
+'    Set test = WorksheetFunction.Match("*G*", Range("A:A"), 0)
+
+
+    Dim job As String
+    Dim searchTerm As Range
+    job = "*D*"
+    Set searchTerm = Range("A:A").Find(what:=job, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
+    ActiveCell = WorksheetFunction.Match(searchTerm.Value, Range("A:A"), 0)
+    
+    
+    
+
+
+    
+'    Dim isGold As Range
+'    Set isGold = Columns(1).Find("*G*")
+'    If Not isGold Is Nothing Then
+'    ActiveCell = "No"
+'    Else
+'    ActiveCell = "Yes"
+'    End If
+   
 
 
 '    Dim lastRow As String
