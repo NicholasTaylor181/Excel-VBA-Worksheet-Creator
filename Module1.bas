@@ -111,6 +111,15 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("H1").Select
     Columns("G:G").EntireColumn.AutoFit
     
+    Dim errorCheck As Integer
+    errorCheck = 1
+    For errorCheck = 3 To lastRow
+        If Range("G" & errorCheck).Text = "#N/A" Then
+        Range("G" & errorCheck) = "-1"
+        End If
+    
+    Next errorCheck
+    
     
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
@@ -458,12 +467,24 @@ Attribute test.VB_ProcData.VB_Invoke_Func = "n\n14"
 '    Set searchTerm = Range("A:A").Find(what:=job, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
 '    ActiveCell = WorksheetFunction.Match(searchTerm.Value, Range("A:A"), 0)
    
-    Range("L6") = Range("H6").Value
-    If Range("H5").Text = "NEW" Then
-    Range("L6") = Range("H6").Value
-    Else
-    Range("L7") = "NO"
-    End If
+'    Range("L6") = Range("H6").Value
+'    If Range("H5").Text = "NEW" Then
+'    Range("L6") = Range("H6").Value
+'    Else
+'    Range("L7") = "NO"
+'    End If
+
+    Dim lastRow As String
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+    Dim errorCheck As Integer
+    errorCheck = 1
+    For errorCheck = 3 To lastRow
+        If Range("G" & errorCheck).Text = "#N/A" Then
+        Range("G" & errorCheck) = "-1"
+        End If
+    
+    Next errorCheck
     
  '   Dim start As Integer
  '   start = 1
