@@ -35,6 +35,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("G2") = "ROTATE"
     If isAutozone Then
     Range("H2") = "NEW"
+    Range("H2").Font.Bold = True
     End If
 
     Call Copy_Parts
@@ -45,7 +46,11 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Selection.Font.Bold = True
     Dim lastRow As String
     lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    If isAutozone Then
+    Range("A2:H" & lastRow).Select
+    Else
     Range("A2:G" & lastRow).Select
+    End If
     Selection.Borders(xlDiagonalDown).LineStyle = xlNone
     Selection.Borders(xlDiagonalUp).LineStyle = xlNone
     With Selection.Borders(xlEdgeLeft)
@@ -168,6 +173,18 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .ReadingOrder = xlContext
         .MergeCells = False
     End With
+    
+    If isAutozone Then
+    Dim start As Integer
+    start = 1
+    For start = 3 To lastRow
+        If Not Range("H" & start).Text = "NEW" Then
+        Range("H" & start) = ""
+        End If
+    
+    Next start
+    End If
+    
     Sheets("Sheet1").Copy after:=Sheets(2)
     Sheets("Sheet1").Copy after:=Sheets(3)
     If isAutozone Then
@@ -275,6 +292,8 @@ Sub Delete_Rows()
     isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
     
     If isAutozone Then
+    Dim d As String
+    d = "*D*"
     Dim isGold As Range
     Set isGold = Columns(1).Find("*G*")
         If Not isGold Is Nothing Then
@@ -282,7 +301,7 @@ Sub Delete_Rows()
         goldStart = WorksheetFunction.Match("*G*", Range("A:A"), 0)
         
         Dim goldEnd As Range
-        Set goldEnd = Range("A:A").Find(what:=pad, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
+        Set goldEnd = Range("A:A").Find(what:=d, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
         Sheets("PADS").Select
         Rows(goldStart & ":" & WorksheetFunction.Match(goldEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
         
@@ -293,10 +312,10 @@ Sub Delete_Rows()
         Rows("3:" & goldStart - 1).Delete Shift:=xlUp
         End If
     Sheets("PADS").Select
-    Dim d As String
+'    Dim d As String
     
     Dim padRangeEnd As Range
-    d = "*D*"
+'    d = "*D*"
     Set padRangeEnd = Range("A:A").Find(what:=d, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
     Dim lastRow As String
     lastRow = Cells(Rows.Count, 1).End(xlUp).Row
@@ -427,18 +446,33 @@ Attribute test.VB_ProcData.VB_Invoke_Func = "n\n14"
     
     
     
-    Range("G3").Select
+'    Range("G3").Select
 '    If isAutozone Then
 '    Dim test
 '    Set test = WorksheetFunction.Match("*G*", Range("A:A"), 0)
 
 
-    Dim job As String
-    Dim searchTerm As Range
-    job = "*D*"
-    Set searchTerm = Range("A:A").Find(what:=job, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
-    ActiveCell = WorksheetFunction.Match(searchTerm.Value, Range("A:A"), 0)
+'    Dim job As String
+'    Dim searchTerm As Range
+'    job = "*D*"
+'    Set searchTerm = Range("A:A").Find(what:=job, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
+'    ActiveCell = WorksheetFunction.Match(searchTerm.Value, Range("A:A"), 0)
+   
+    Range("L6") = Range("H6").Value
+    If Range("H5").Text = "NEW" Then
+    Range("L6") = Range("H6").Value
+    Else
+    Range("L7") = "NO"
+    End If
     
+ '   Dim start As Integer
+ '   start = 1
+ '   For start = 3 To lastRow
+ '   Range("K" & start) = start
+ '       If Range("H" & start).Value = "NEW" Then
+ '       Range("H" & start).Clear
+ '       End If
+ '   Next start
     
     
 
