@@ -9,6 +9,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
 
     Dim macroWorkbook As Workbook
     Set macroWorkbook = ThisWorkbook
+    
 
     Sheets.Add After:=ActiveSheet
     Sheets(1).Activate
@@ -81,25 +82,16 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .TintAndShade = 0
         .Weight = xlThin
     End With
-    ActiveWindow.SmallScroll Down:=228
     Range("B" & lastRow + 1).Select
     Application.CutCopyMode = False
     ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
-    Range("B241").Select
-    ActiveWindow.SmallScroll Down:=-243
-    Range("D3").Select
-    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("D3").Formula
-    Range("E3").Select
-    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("E3").Formula
-    Range("F3").Select
-    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("F3").Formula
-    Range("G3").Select
-    ActiveCell.Formula = macroWorkbook.Sheets(1).Range("G3").Formula
-    Range("D3:G3").Select
-    Selection.AutoFill Destination:=Range("D3:G" & lastRow)
+    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D3").Formula
+    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E3").Formula
+    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F3").Formula
+    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G3").Formula
+    Range("D3:G3").AutoFill Destination:=Range("D3:G" & lastRow)
     Range("D3:G" & lastRow).Select
-    Range("A2:G2").Select
-    Selection.AutoFilter
+    Range("A2:G2").AutoFilter
     Range("H1").Select
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
@@ -113,10 +105,12 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .Apply
     End With
     
-    'Call Set_Date
+    
     
     Range("B1").Select
-    ActiveCell.FormulaR1C1 = "ORDER"
+    Call Set_Date
+'    Call Edge_Code
+    Range("B1").Font.Bold = True
     Range("B1:G1").Select
     With Selection
         .HorizontalAlignment = xlCenter
@@ -166,6 +160,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Sheets("Sheet1 (3)").Name = "BBS"
     
     Call Delete_Rows
+    Call Edge_Code
 '    delete rows only works when sorted by rotation
 End Sub
 Sub Set_Date()
@@ -179,12 +174,60 @@ Attribute Set_Date.VB_ProcData.VB_Invoke_Func = "S\n14"
     orderDate = Sheets(1).Range("D2").Value + 1
     Dim shipDate As String
     shipDate = Sheets(1).Range("G2").Value - 1
-    
-    Range("G3").Select
     ActiveCell = "ORDER: " & Mid(orderDate, 5, 2) & "/" & Right(orderDate, 2) & "/" & Left(orderDate, 4) & "          SHIP: " & Mid(shipDate, 5, 2) & "/" & Right(shipDate, 2) & "/" & Left(shipDate, 4)
-
-'  set up dynamic date
-
+    
+End Sub
+Sub Edge_Code()
+'
+' Edge_Code Macro
+'
+'
+'
+    Dim WS_Count As Integer
+    Dim I As Integer
+    WS_Count = ActiveWorkbook.Worksheets.Count
+    
+    Dim orderNum As String
+    If Mid(Sheets(1).Range("C2").Value, 8, 1) = "A" Then
+    orderNum = Mid(Sheets(1).Range("C2").Value, 9, 2)
+    
+    Else: orderNum = Left(Sheets(1).Range("C2").Value, 2)
+    
+    End If
+    
+    For I = 2 To WS_Count
+    ActiveWorkbook.Sheets(I).Activate
+    
+    If orderNum = 23 Or orderNum = 25 Or orderNum = 26 Or orderNum = 10 Then
+        
+    Rows("1:1").Select
+    Selection.Insert Shift:=xlDown
+    Selection.Insert Shift:=xlDown
+    Range("A1:G2").Select
+    Range("A2").Activate
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = True
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Merge
+    Range("A1") = "PULL ALL PARTS AFTER 8035. IF THERE ARE NONE, SEPERATE, TAKE TO REPACK AREA AND LABEL PALLET WITH FULL PO #"
+    Range("A1").Font.Bold = True
+    End If
+    
+    If orderNum = 10 Then
+    Range("A1") = "PULL ALL PARTS AFTER 2/5/2018. IF THERE ARE NONE, SEPARATE, TAKE TO REPACK AREA AND LABEL PALLET"
+    Range("A1").Font.Bold = True
+    
+    End If
+    
+    Next I
 End Sub
 
 Sub Delete_Rows()
