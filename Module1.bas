@@ -88,16 +88,12 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("B241").Select
     ActiveWindow.SmallScroll Down:=-243
     Range("D3").Select
-'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,3,0)"
     ActiveCell.Formula = macroWorkbook.Sheets(1).Range("D3").Formula
     Range("E3").Select
-'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,4,0)"
     ActiveCell.Formula = macroWorkbook.Sheets(1).Range("E3").Formula
     Range("F3").Select
-'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,5,0)"
     ActiveCell.Formula = macroWorkbook.Sheets(1).Range("F3").Formula
     Range("G3").Select
-'    ActiveCell.Formula = "=VLOOKUP(A3, '[WORKSHEET INV TEMPLATE.xlsx]OR'!$A$1:$F$3000,6,0)"
     ActiveCell.Formula = macroWorkbook.Sheets(1).Range("G3").Formula
     Range("D3:G3").Select
     Selection.AutoFill Destination:=Range("D3:G" & lastRow)
@@ -116,6 +112,9 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
         .SortMethod = xlPinYin
         .Apply
     End With
+    
+    'Call Set_Date
+    
     Range("B1").Select
     ActiveCell.FormulaR1C1 = "ORDER"
     Range("B1:G1").Select
@@ -174,8 +173,15 @@ Attribute Set_Date.VB_ProcData.VB_Invoke_Func = "S\n14"
 '
 ' Set_Date Macro
 '
-' Keyboard Shortcut: Ctrl+Shift+S
 '
+'
+    Dim orderDate As String
+    orderDate = Sheets(1).Range("D2").Value + 1
+    Dim shipDate As String
+    shipDate = Sheets(1).Range("G2").Value - 1
+    
+    Range("G3").Select
+    ActiveCell = "ORDER: " & Mid(orderDate, 5, 2) & "/" & Right(orderDate, 2) & "/" & Left(orderDate, 4) & "          SHIP: " & Mid(shipDate, 5, 2) & "/" & Right(shipDate, 2) & "/" & Left(shipDate, 4)
 
 '  set up dynamic date
 
