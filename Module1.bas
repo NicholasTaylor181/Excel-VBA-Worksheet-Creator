@@ -40,10 +40,7 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
 
     Call Copy_Parts
     
-    
-    Range("A2:G2").Select
-    Range("A2:G2").Select
-    Selection.Font.Bold = True
+    Range("A2:G2").Font.Bold = True
     Dim lastRow As String
     lastRow = Cells(Rows.Count, 1).End(xlUp).Row
     If isAutozone Then
@@ -403,101 +400,3 @@ Sub Delete_NA()
     Loop
     
 End Sub
-
-Sub test()
-Attribute test.VB_ProcData.VB_Invoke_Func = "n\n14"
-'
-' Test Macro
-'
-
-'
-
-'    Range("B14").FormulaR1C1 = "=""'[VDP PO ""&TEXT(TODAY(),""yyyymmdd"")&"".xlsx]BASE'!"""
-'    Range("B15").Formula = "=VLOOKUP(B2,INDIRECT(B14&""C:R""),16,0)"
-'    Dim macroWorkbook As Workbook
-'    Set macroWorkbook = ThisWorkbook
-    
-    Dim isAutozone As Boolean
-    isAutozone = Not Mid(Sheets(1).Range("C2").Value, 8, 1) = "A"
-    
-    
-    
-'    Range("G3").Select
-'    If isAutozone Then
-'    Dim test
-'    Set test = WorksheetFunction.Match("*G*", Range("A:A"), 0)
-
-
-'    Dim job As String
-'    Dim searchTerm As Range
-'    job = "*D*"
-'    Set searchTerm = Range("A:A").Find(what:=job, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
-'    ActiveCell = WorksheetFunction.Match(searchTerm.Value, Range("A:A"), 0)
-   
-'    Range("L6") = Range("H6").Value
-'    If Range("H5").Text = "NEW" Then
-'    Range("L6") = Range("H6").Value
-'    Else
-'    Range("L7") = "NO"
-'    End If
-
-    Dim lastRow As String
-    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
-    
-    Dim errorCheck As Integer
-    errorCheck = 1
-    For errorCheck = 3 To lastRow
-        If Range("G" & errorCheck).Text = "#N/A" Then
-        Range("G" & errorCheck) = "-1"
-        End If
-    
-    Next errorCheck
-    
- '   Dim start As Integer
- '   start = 1
- '   For start = 3 To lastRow
- '   Range("K" & start) = start
- '       If Range("H" & start).Value = "NEW" Then
- '       Range("H" & start).Clear
- '       End If
- '   Next start
-    
-    
-
-
-    
-'    Dim isGold As Range
-'    Set isGold = Columns(1).Find("*G*")
-'    If Not isGold Is Nothing Then
-'    ActiveCell = "No"
-'    Else
-'    ActiveCell = "Yes"
-'    End If
-   
-
-
-'    Dim lastRow As String
- '   lastRow = Cells(Rows.Count, 1).End(xlUp).Row
-    
-  '  Range("B" & lastRow + 1).Select
-  '  ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
-  
-  
-  'FOR EDGECODE
-  ' USE SHIP STATE, CA OR WA
-  
-  
-  
-  'FOR AZ OR OR
-  ' IF H3 = OR_SKU
-  
-  'FOR AZ ADD NEW COLUMN TO H
-  'SAME PROCEDURE OTHERWISE
-  'MAYBE FOR INV ROTATE SIZE ETC INSTEAD OF COPYING ALL INV INTO TEMP, HAVE JUST THE FORMULA LINKING TO INV, THEN COPY THAT TO SHEETS
-  
-  
-    
-    
-End Sub
-
-
