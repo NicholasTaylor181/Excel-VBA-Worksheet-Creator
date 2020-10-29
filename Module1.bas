@@ -93,33 +93,33 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Application.CutCopyMode = False
     ActiveCell.FormulaR1C1 = "=SUM(R[-" & lastRow - 2 & "]C:R[-1]C)"
     If isAutozone Then
-    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D6").Formula
-    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E6").Formula
-    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F6").Formula
-    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G6").Formula
-    Range("H3").Formula = macroWorkbook.Sheets(1).Range("H6").Formula
+    Range("D3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]AZ INV'!$A$1:$G$3000,3,0)"
+    Range("E3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]AZ INV'!$A$1:$G$3000,5,0)"
+    Range("F3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]AZ INV'!$A$1:$G$3000,6,0)"
+    Range("G3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]AZ INV'!$A$1:$G$3000,7,0)"
+    Range("H3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]AZ NEW'!$A$1:$G$3000,3,0)"
+    
+'    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D6").Formula
+'    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E6").Formula
+'    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F6").Formula
+'    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G6").Formula
+'    Range("H3").Formula = macroWorkbook.Sheets(1).Range("H6").Formula
     Range("H3:H3").AutoFill Destination:=Range("H3:H" & lastRow)
     Else
-    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D3").Formula
-    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E3").Formula
-    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F3").Formula
-    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G3").Formula
+    Range("D3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]OR INV'!$A$1:$F$3000,3,0)"
+    Range("E3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]OR INV'!$A$1:$F$3000,4,0)"
+    Range("F3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]OR INV'!$A$1:$F$3000,5,0)"
+    Range("G3").Formula = "=VLOOKUP(A3, '[Order Sheet Macro.xlsm]OR INV'!$A$1:$F$3000,6,0)"
+'    Range("D3").Formula = macroWorkbook.Sheets(1).Range("D3").Formula
+'    Range("E3").Formula = macroWorkbook.Sheets(1).Range("E3").Formula
+'    Range("F3").Formula = macroWorkbook.Sheets(1).Range("F3").Formula
+'    Range("G3").Formula = macroWorkbook.Sheets(1).Range("G3").Formula
     End If
     Range("D3:G3").AutoFill Destination:=Range("D3:G" & lastRow)
     Range("D3:H" & lastRow).Select
     Range("A2:H2").AutoFilter
     Range("H1").Select
     Columns("G:G").EntireColumn.AutoFit
-    
-'    Dim errorCheck As Integer
-'    errorCheck = 1
-'    For errorCheck = 3 To lastRow
-'        If Range("G" & errorCheck).Text = "#N/A" Then
-'        Range("G" & errorCheck) = "-1"
-'        End If
-
-'    Next errorCheck
-    
     
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
@@ -325,11 +325,9 @@ Sub Delete_Rows()
         Rows("3:" & goldStart - 1).Delete Shift:=xlUp
         End If
     Sheets("PADS").Select
-'    Dim d As String
     Call Delete_NA
     
     Dim padRangeEnd As Range
-'    d = "*D*"
     Set padRangeEnd = Range("A:A").Find(what:=d, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
     Dim lastRow As String
     lastRow = Cells(Rows.Count, 1).End(xlUp).Row
@@ -361,63 +359,6 @@ Sub Delete_Rows()
     Selection.Delete Shift:=xlUp
     End If
 End Sub
-Sub Filter_test()
-Attribute Filter_test.VB_ProcData.VB_Invoke_Func = " \n14"
-'
-' Filter_test Macro
-'
-
-'
-    Windows("850_OReillyAuto_6241276A27MZ00.xlsx").Activate
-    ActiveWindow.SmallScroll Down:=-51
-    Windows("850_OReillyAuto_6248280A03GF00.csv").Activate
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    With ActiveWorkbook.Worksheets("BB").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    With ActiveWorkbook.Worksheets("BB").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("BB").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    With ActiveWorkbook.Worksheets("BB").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    Sheets("BBS").Select
-    ActiveWindow.SmallScroll Down:=-120
-    ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort.SortFields.Add2 Key:=Range( _
-        "A2"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    With ActiveWorkbook.Worksheets("BBS").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-End Sub
 Sub Copy_Parts()
 '
 ' Copy_Parts Macro
@@ -448,18 +389,10 @@ Sub Delete_NA()
 '
 'Delete_NA Macro
 '
-    Dim x As Integer
     Dim lastRow As String
     lastRow = Cells(Rows.Count, 1).End(xlUp).Row
     Dim errorCheck As Integer
     errorCheck = 3
-'    For x = 1000 To errorCheck Step -1
-'        If Range("G" & x).Text = "#N/A" Then
-  '      Range("G" & errorCheck) = "-1"
-'        Rows(x).Delete
-'        End If
-    
-'    Next x
 
     Do While lastRow > errorCheck
         If Range("G" & lastRow).Text = "#N/A" Then
@@ -469,21 +402,6 @@ Sub Delete_NA()
         
     Loop
     
-
-
-
-
-
-'    For errorCheck = 3 To lastRow
-'        If Range("G" & errorCheck).Text = "#N/A" Then
-'        Rows(errorCheck).Delete
-'        End If
-
-'    Next errorCheck
-
-
-
-
 End Sub
 
 Sub test()
