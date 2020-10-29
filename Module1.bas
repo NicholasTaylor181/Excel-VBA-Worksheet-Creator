@@ -111,14 +111,14 @@ Attribute ORDER_SHEET.VB_ProcData.VB_Invoke_Func = "A\n14"
     Range("H1").Select
     Columns("G:G").EntireColumn.AutoFit
     
-    Dim errorCheck As Integer
-    errorCheck = 1
-    For errorCheck = 3 To lastRow
-        If Range("G" & errorCheck).Text = "#N/A" Then
-        Range("G" & errorCheck) = "-1"
-        End If
-    
-    Next errorCheck
+'    Dim errorCheck As Integer
+'    errorCheck = 1
+'    For errorCheck = 3 To lastRow
+'        If Range("G" & errorCheck).Text = "#N/A" Then
+'        Range("G" & errorCheck) = "-1"
+'        End If
+
+'    Next errorCheck
     
     
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
@@ -306,22 +306,27 @@ Sub Delete_Rows()
     Dim isGold As Range
     Set isGold = Columns(1).Find("*G*")
         If Not isGold Is Nothing Then
+        Call Delete_NA
         Dim goldStart As String
         goldStart = WorksheetFunction.Match("*G*", Range("A:A"), 0)
         
         Dim goldEnd As Range
         Set goldEnd = Range("A:A").Find(what:=d, after:=Range("A1"), searchorder:=xlByColumns, searchdirection:=xlPrevious)
         Sheets("PADS").Select
+        Call Delete_NA
         Rows(goldStart & ":" & WorksheetFunction.Match(goldEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
         
         Sheets("SHOES").Select
+        Call Delete_NA
         Rows(goldStart & ":" & WorksheetFunction.Match(goldEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
         
         Sheets("GOLD").Select
+        Call Delete_NA
         Rows("3:" & goldStart - 1).Delete Shift:=xlUp
         End If
     Sheets("PADS").Select
 '    Dim d As String
+    Call Delete_NA
     
     Dim padRangeEnd As Range
 '    d = "*D*"
@@ -331,10 +336,12 @@ Sub Delete_Rows()
     Rows(WorksheetFunction.Match(padRangeEnd.Value, Range("A:A"), 0) + 1 & ":" & lastRow).Delete Shift:=xlUp
     
     Sheets("SHOES").Select
+    Call Delete_NA
     Rows("3:" & WorksheetFunction.Match(padRangeEnd.Value, Range("A:A"), 0)).Delete Shift:=xlUp
         
     Else
     Sheets("BB").Select
+    Call Delete_NA
     Dim bbRangeStart As String
     bbRangeStart = WorksheetFunction.Match("*S*", Range("A:A"), 0)
     Dim bbRangeEnd As String
@@ -345,6 +352,7 @@ Sub Delete_Rows()
 
     
     Sheets("BBS").Select
+    Call Delete_NA
     Dim bbsRangeStart As String
     bbsRangeStart = WorksheetFunction.Match("*D*", Range("A:A"), 0)
     Dim lRow As String
@@ -435,6 +443,47 @@ Sub Copy_Parts()
     Range("B3").Select
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
+End Sub
+Sub Delete_NA()
+'
+'Delete_NA Macro
+'
+    Dim x As Integer
+    Dim lastRow As String
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    Dim errorCheck As Integer
+    errorCheck = 3
+'    For x = 1000 To errorCheck Step -1
+'        If Range("G" & x).Text = "#N/A" Then
+  '      Range("G" & errorCheck) = "-1"
+'        Rows(x).Delete
+'        End If
+    
+'    Next x
+
+    Do While lastRow > errorCheck
+        If Range("G" & lastRow).Text = "#N/A" Then
+        Rows(lastRow).Delete
+        End If
+        lastRow = lastRow - 1
+        
+    Loop
+    
+
+
+
+
+
+'    For errorCheck = 3 To lastRow
+'        If Range("G" & errorCheck).Text = "#N/A" Then
+'        Rows(errorCheck).Delete
+'        End If
+
+'    Next errorCheck
+
+
+
+
 End Sub
 
 Sub test()
